@@ -1,0 +1,42 @@
+{
+  "manifest_version": 3,
+  "name": "防think指纹探针",
+  "version": "1.0.0",
+  "author": "hhhhhhhh (based on Perkica)",
+  "description": "独立的 Arena 数字指纹暖场抽卡扩展；面板保留模型、三题安全归档与可选 think 处理模式。",
+  "minimum_chrome_version": "118",
+  "permissions": [
+    "activeTab",
+    "storage"
+  ],
+  "host_permissions": [
+    "https://arena.ai/*"
+  ],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'; connect-src 'self' https://arena.ai"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "防think指纹探针 v1.0"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://arena.ai/agent*",
+        "https://arena.ai/work*"
+      ],
+      "js": [
+        "price-runtime.js",
+        "panel-runtime.js",
+        "probe-runtime.js",
+        "conversation-rename.js",
+        "content.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ]
+}

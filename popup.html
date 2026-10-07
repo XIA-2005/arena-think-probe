@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>防think指纹探针</title><link rel="stylesheet" href="popup.css"></head>
+<body>
+  <header><span class="mark">M</span><div><h1>防think指纹探针</h1><p>AUTO DRAW · v1.0，by hhhhhhhh</p></div></header>
+  <section id="unavailable" class="notice" hidden>请先打开或刷新一个 Arena Agent 页面。</section>
+  <section id="controls">
+    <p class="warning">自动抽卡流程：每轮先发随机码暖场等回复，再问指纹题；快速=随机 1 题，精准=3 题。严格按本轮消息 ID 取助手 text，异常不计分；思维链按模式保留、归档或暂停；无法停止生成／归档未确认则停机。结果只作为候选。</p>
+    <div class="primary-actions"><button id="run-quick" class="primary" disabled>快速识别 · 随机1题</button><button id="run-precise" disabled>三题核验 · 3题全问</button></div>
+    <div class="minor-actions"><button id="append" disabled>再补 1 题</button><button id="stop" disabled>停止</button><button id="clear" disabled>清除结果</button></div>
+    <p id="progress" class="progress" role="status">正在读取当前页状态…</p>
+    <section id="result" class="result" hidden><div class="result-head"><b id="model"></b><span id="badge"></span></div><p id="result-reason" class="reason"></p><p id="metrics"></p><small id="bank"></small></section>
+    <details class="help"><summary>判定级别怎么读？</summary><p>较强候选：三题指纹较清晰，没有单题或费用矛盾；仍非官方确认。</p><p>待核验：题数不足、匹配偏弱、候选接近或存在矛盾。具体原因显示在候选下面。费用不足不会单独降级。</p><p>需要移动面板时，请拖动网页内浮窗的标题；工具栏原生弹窗的位置由 Chrome 控制。</p></details>
+    <button id="cost-enable" title="修改费用功能Cookie，有效1天；不改变登录凭据">启用费用面板开关</button><button id="price-refresh">读取费用核验（不发送）</button><p id="price-note" class="draw-note"></p><details><summary>费用时间线（价格相容与变化线索）</summary><p class="draw-note">相容表示费用没有排除候选；矛盾表示与本地参考表不符。窗口稳定或变化不能单独证明身份或切换。</p><pre id="timeline" class="timeline"></pre></details>
+    <section class="draw">
+      <h2>自动抽卡（-防人机-） <span>New Chat 循环</span></h2>
+      <div class="draw-grid">
+        <label for="rounds">轮数</label><input id="rounds" type="number" min="1" max="100" step="1" value="5">
+        <label for="mode">识别模式</label><select id="mode"><option value="quick">快速 · 随机1题</option><option value="precise">三题 · 3题全问</option></select>
+        <label for="min-pulse">额度下限%</label><input id="min-pulse" type="number" min="0" max="100" step="1" value="0">
+      </div>
+      <div class="draw-options">
+                <label class="draw-option-row"><input id="keep-only" type="checkbox"><span>只保留所选模型（非目标归档）</span></label>
+        <details class="keep-details"><summary>展开／收起保留模型列表</summary><div id="keep-models" class="keep-models"></div></details>
+         <label class="draw-option-row" for="think-mode">think 处理 <select id="think-mode"><option value="keep_skip">保留并跳过</option><option value="archive_skip" selected>归档并跳过（默认）</option><option value="pause">暂停</option></select></label>
+        <label class="draw-option-row"><input id="follow-up" type="checkbox"><span>追问弱匹配（仍弱则发SVG）</span></label>
+      </div>
+      <p class="draw-note">面板勾选并开启保留开关后：非目标候选补齐三题，三条有效、无冲突且指纹清晰／接近才归档；证据不足、弱匹配或未勾选模型均不按模型归档。think 的「保留并跳过」会先停止生成；「暂停」不操作当前会话。</p>
+      <p id="keep-summary" class="draw-note">正在读取面板保留模型…</p><p id="draw-progress" class="draw-note" role="status"></p><div class="draw-actions"><button id="draw-start" class="primary" disabled>开始抽卡</button><button id="draw-stop" class="stop" disabled>停止抽卡</button></div>
+      <div class="draw-minor"><button id="draw-diagnose" disabled>自检（只检查，不发送）</button></div>
+      <div id="draw-results" class="results"></div>
+    </section>
+    <section class="balance">
+      <div class="balance-row"><span>每日额度剩余</span><b id="balance-value">—</b><button id="balance-refresh">刷新</button></div>
+      <p id="balance-note" class="balance-note">额度来自 arena.ai/api/me/pulse（百分比）</p>
+    </section>
+  </section>
+  <footer>只提取数字序列 · 本机评分 · 不保存聊天正文 · <b>v1.0，by hhhhhhhh</b><br><span>基于 Perkica 原版；抽卡会真实消耗 Arena 额度，随时可停止。</span></footer>
+  <script src="popup.js" type="module"></script>
+</body>
+</html>
